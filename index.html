@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Ramitha!</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 60px 40px 40px 40px;
+            width: 100%;
+            min-height: 100vh;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .birthday-header {
+            font-size: 3.5em;
+            color: #fff;
+            margin-bottom: 30px;
+            margin-top: 40px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: glow 2s ease-in-out infinite alternate;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 255, 255, 0.3); }
+            to { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 255, 255, 0.6); }
+        }
+
+        .name-highlight {
+            font-size: 4em;
+            color: #FFD700;
+            font-weight: 800;
+            margin: 20px 0;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+            animation: bounce 2s infinite;
+            letter-spacing: 3px;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .age-celebration {
+            font-size: 2.5em;
+            color: #fff;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            font-weight: 600;
+        }
+
+        .wishes-section {
+            margin: 40px 0;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border-left: 5px solid #FFD700;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .wish-text {
+            font-size: 1.3em;
+            color: #fff;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .special-message {
+            font-size: 1.5em;
+            color: #FFD700;
+            font-weight: 600;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            animation: pulse 3s infinite;
+            letter-spacing: 1px;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .balloons {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 3em;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateX(-50%) translateY(0px); }
+            50% { transform: translateX(-50%) translateY(-20px); }
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #FFD700;
+            animation: confetti-fall 3s linear infinite;
+        }
+
+        .confetti:nth-child(1) { left: 10%; animation-delay: 0s; background: #FF6B6B; }
+        .confetti:nth-child(2) { left: 20%; animation-delay: 0.5s; background: #4ECDC4; }
+        .confetti:nth-child(3) { left: 30%; animation-delay: 1s; background: #45B7D1; }
+        .confetti:nth-child(4) { left: 40%; animation-delay: 1.5s; background: #96CEB4; }
+        .confetti:nth-child(5) { left: 50%; animation-delay: 2s; background: #FFEAA7; }
+        .confetti:nth-child(6) { left: 60%; animation-delay: 2.5s; background: #DDA0DD; }
+        .confetti:nth-child(7) { left: 70%; animation-delay: 3s; background: #98D8C8; }
+        .confetti:nth-child(8) { left: 80%; animation-delay: 3.5s; background: #F7DC6F; }
+        .confetti:nth-child(9) { left: 90%; animation-delay: 4s; background: #BB8FCE; }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .celebration-btn {
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 20px 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .celebration-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .year-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="balloons">🎈🎈🎈</div>
+        
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+
+        <h1 class="birthday-header">🎉 Happy Birthday! 🎉</h1>
+        
+        <div class="name-highlight">RAMITHA</div>
+        
+        <div class="age-celebration">
+            Welcome to the <span class="year-badge">2025</span> crew turning 
+            <span style="font-size: 1.2em; color: #FFD700;">✨ 20 ✨</span>
+        </div>
+
+        <div class="wishes-section">
+            <div class="wish-text">
+                🌟 Another year of awesome adventures awaits you! May this new chapter bring you incredible experiences, amazing opportunities, and tons of fun moments to remember.
+            </div>
+            
+            <div class="wish-text">
+                🚀 You're entering your twenties with style! Here's to conquering new goals, making unforgettable memories, and celebrating every achievement along the way.
+            </div>
+            
+            <div class="wish-text">
+                ✨ May your day be filled with laughter, surprises, and all your favorite things. You deserve nothing but the best on your special day!
+            </div>
+        </div>
+
+        <div class="special-message">
+            🎯 Happy Birthday, Intelligent One! 🎯
+            <br>
+            <span style="font-size: 0.8em; color: #fff;">
+                Your smart mind and brilliant ideas inspire everyone around you!
+            </span>
+        </div>
+
+        <button class="celebration-btn" onclick="celebrate()">🎊 Let's Celebrate! 🎊</button>
+        <button class="celebration-btn" onclick="showMessage()">💫 Special Message 💫</button>
+
+        <div id="celebration-message" style="display: none; margin-top: 20px; padding: 20px; background: rgba(255, 215, 0, 0.2); border-radius: 10px; color: #fff; font-size: 1.2em;">
+            🎉 Wishing you a year filled with success, joy, and endless possibilities! Keep shining bright, Ramitha! 🌟
+        </div>
+    </div>
+
+    <script>
+        function celebrate() {
+            // Create more confetti
+            for (let i = 0; i < 20; i++) {
+                createConfetti();
+            }
+            
+            // Change background temporarily
+            document.body.style.background = 'linear-gradient(135deg, #FF6B6B 0%, #4ECDC4 50%, #45B7D1 100%)';
+            
+            setTimeout(() => {
+                document.body.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+            }, 3000);
+        }
+
+        function createConfetti() {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + '%';
+            confetti.style.animationDelay = Math.random() * 2 + 's';
+            confetti.style.backgroundColor = getRandomColor();
+            document.body.appendChild(confetti);
+            
+            setTimeout(() => {
+                confetti.remove();
+            }, 3000);
+        }
+
+        function getRandomColor() {
+            const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8', '#F7DC6F', '#BB8FCE'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        function showMessage() {
+            const message = document.getElementById('celebration-message');
+            message.style.display = message.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Auto-create confetti on page load
+        window.addEventListener('load', () => {
+            setInterval(() => {
+                if (Math.random() < 0.3) {
+                    createConfetti();
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
