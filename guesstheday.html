@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎂 Guess the Day - Birthday Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient 3s ease infinite;
+            margin-bottom: 10px;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
+        .progress-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            height: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+            height: 100%;
+            width: 0%;
+            border-radius: 25px;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 20px rgba(76, 205, 196, 0.5);
+        }
+
+        .progress-text {
+            text-align: center;
+            margin: 10px 0;
+            font-size: 1rem;
+        }
+
+        .memories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .memory-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .memory-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(76, 205, 196, 0.3);
+        }
+
+        .memory-card.correct {
+            border-color: #4ecdc4;
+            box-shadow: 0 0 30px rgba(76, 205, 196, 0.3);
+        }
+
+        .memory-card.incorrect {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .media-placeholder {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 9/16;
+            max-height: 400px;
+        }
+
+        .media-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        .placeholder-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .media-placeholder::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .video-placeholder {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-element {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 15px;
+            transition: opacity 0.3s ease;
+        }
+
+        .video-overlay:hover {
+            opacity: 0.8;
+        }
+
+        .play-button {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .play-button:hover {
+            transform: scale(1.1);
+            background: white;
+        }
+
+        .video-info {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .memory-question {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            color: #4ecdc4;
+        }
+
+        .date-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            transition: border-color 0.3s ease;
+        }
+
+        .date-input:focus {
+            outline: none;
+            border-color: #4ecdc4;
+            box-shadow: 0 0 20px rgba(76, 205, 196, 0.2);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(76, 205, 196, 0.4);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .status {
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .status.correct {
+            color: #4ecdc4;
+        }
+
+        .status.incorrect {
+            color: #ff6b6b;
+        }
+
+        .status.pending {
+            color: #ffeaa7;
+        }
+
+        .surprise-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin-top: 40px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .surprise-box.locked {
+            opacity: 0.5;
+            transform: scale(0.95);
+            filter: grayscale(0.5);
+        }
+
+        .surprise-box.unlocked {
+            animation: unlock 1s ease-out;
+        }
+
+        @keyframes unlock {
+            0% { transform: scale(0.95) rotateZ(-5deg); }
+            50% { transform: scale(1.05) rotateZ(5deg); }
+            100% { transform: scale(1) rotateZ(0deg); }
+        }
+
+        .lock-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .surprise-content {
+            display: none;
+        }
+
+        .surprise-content.revealed {
+            display: block;
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .birthday-message {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .birthday-wishes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .wish-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .photo-placeholder {
+            width: 100%;
+            height: auto;
+            min-height: 200px;
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #2d3436;
+            margin: 30px 0;
+            font-weight: bold;
+            padding: 20px;
+        }
+
+        .photo-placeholder img {
+            max-width: 100%;
+            max-height: 400px;
+            width: auto;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .continue-btn {
+            background: linear-gradient(45deg, #00b894, #00cec9);
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 20px;
+        }
+
+        .continue-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 184, 148, 0.4);
+        }
+
+        .confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .celebration {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            animation: celebrate 1s ease-out;
+        }
+
+        @keyframes celebrate {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .title { font-size: 2rem; }
+            .memories-grid { grid-template-columns: 1fr; }
+            .birthday-wishes { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">🎂 Guess the Day Quiz</h1>
+            <p class="subtitle">Can you remember when these special memories were made?</p>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <p class="progress-text" id="progressText">0 of 6 memories guessed correctly</p>
+        </div>
+
+        <div class="memories-grid" id="memoriesGrid">
+            <!-- Memory cards will be generated here -->
+        </div>
+
+        <div class="surprise-box locked" id="surpriseBox">
+            <div class="lock-icon">🔒</div>
+            <h2>Birthday Surprise Awaits!</h2>
+            <p>Guess all the dates correctly to unlock your special surprise!</p>
+            
+            <div class="surprise-content" id="surpriseContent">
+                <div class="birthday-message">Happy Birthday to the most amazing friend! 🎉</div>
+                
+                <div class="birthday-wishes">
+                    <div class="wish-card">
+                        <h3>🌟</h3>
+                        <p>Another year of awesome memories ahead!</p>
+                    </div>
+                    <div class="wish-card">
+                        <h3>💕</h3>
+                        <p>Thank you for being such an incredible friend!</p>
+                    </div>
+                    <div class="wish-card">
+                        <h3>🎊</h3>
+                        <p>Here's to more adventures and laughter together!</p>
+                    </div>
+                    <div class="wish-card">
+                        <h3>☀️</h3>
+                        <p>You make every day brighter just by being you!</p>
+                    </div>
+                </div>
+
+                <div class="photo-placeholder">
+                    <img src="final.jpg" alt="Special Birthday Photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div style="display: none; align-items: center; justify-content: center; font-size: 1.5rem; color: #2d3436; font-weight: bold;">
+                        📸 Special Birthday Photo Goes Here
+                    </div>
+                </div>
+
+                <button class="continue-btn" onclick="showFinalSurprise()">
+                    Continue to Final Surprise ✨
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const memories = [
+            {
+                id: 1,
+                type: "photo",
+                correctDate: "2023-05-26",
+                placeholder: "memory1.jpg",
+                description: "Spring Day Memory - May 2023",
+                gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+            },
+            {
+                id: 2,
+                type: "photo",
+                correctDate: "2023-10-16",
+                placeholder: "memory2.jpg",
+                description: "Autumn Adventure - October 2023",
+                gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"
+            },
+            {
+                id: 3,
+                type: "photo",
+                correctDate: "2024-01-31",
+                placeholder: "memory3.jpg",
+                description: "Winter Memories - January 2024",
+                gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)"
+            },
+            {
+                id: 4,
+                type: "photo",
+                correctDate: "2024-06-29",
+                placeholder: "memory4.jpg",
+                description: "Summer Memories - June 2024",
+                gradient: "linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%)"
+            },
+            {
+                id: 5,
+                type: "photo",
+                correctDate: "2024-10-29",
+                placeholder: "memory5.jpg",
+                description: "Recent Fun - October 2024",
+                gradient: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)"
+            },
+            {
+                id: 6,
+                type: "photo",
+                correctDate: "2025-07-10",
+                placeholder: "memory6.jpg",
+                description: "Summer 2025 Moments - July 2025",
+                gradient: "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)"
+            }
+        ];
+
+        let correctGuesses = 0;
+        const gameState = {};
+
+        function initGame() {
+            const grid = document.getElementById('memoriesGrid');
+            grid.innerHTML = '';
+
+            memories.forEach(memory => {
+                const card = createMemoryCard(memory);
+                grid.appendChild(card);
+                gameState[memory.id] = { correct: false, guessed: false };
+            });
+        }
+
+        function createMemoryCard(memory) {
+            const card = document.createElement('div');
+            card.className = 'memory-card';
+            card.id = `memory-${memory.id}`;
+
+            card.innerHTML = `
+                <div class="media-placeholder" style="background: ${memory.gradient}">
+                    <img src="${memory.placeholder}" alt="${memory.description}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="placeholder-text" style="display: none;">
+                        📸 Photo
+                        <br><small>${memory.description}</small>
+                    </div>
+                </div>
+                <p class="memory-question">When do you think this memory was made?</p>
+                <input type="date" class="date-input" id="input-${memory.id}" placeholder="MM/DD/YYYY">
+                <button class="submit-btn" onclick="submitGuess(${memory.id})">Submit Guess</button>
+                <div class="status pending" id="status-${memory.id}">⏳ Waiting for your guess...</div>
+            `;
+
+            return card;
+        }
+
+        function submitGuess(memoryId) {
+            const input = document.getElementById(`input-${memoryId}`);
+            const status = document.getElementById(`status-${memoryId}`);
+            const card = document.getElementById(`memory-${memoryId}`);
+            const memory = memories.find(m => m.id === memoryId);
+
+            if (!input.value) {
+                showMessage(status, "Please select a date! 📅", "incorrect");
+                return;
+            }
+
+            const guessedDate = input.value;
+            const isCorrect = guessedDate === memory.correctDate;
+
+            if (isCorrect) {
+                if (!gameState[memoryId].correct) {
+                    correctGuesses++;
+                    gameState[memoryId].correct = true;
+                }
+                
+                showMessage(status, "Perfect! You remember this day! ✨", "correct");
+                card.classList.add('correct');
+                input.disabled = true;
+                card.querySelector('.submit-btn').disabled = true;
+                
+                // Celebration effect
+                showCelebration(card);
+                updateProgress();
+                
+                if (correctGuesses === memories.length) {
+                    setTimeout(() => unlockSurprise(), 1000);
+                }
+            } else {
+                showMessage(status, "Hmm, not quite! Think again... 🤔", "incorrect");
+                card.classList.add('incorrect');
+                setTimeout(() => card.classList.remove('incorrect'), 500);
+                
+                // Encouraging messages
+                const encouragements = [
+                    "You're getting closer! 💪",
+                    "Almost there! 🌟",
+                    "Keep trying! You've got this! 🎯",
+                    "Think back... when could this have been? 🤔"
+                ];
+                setTimeout(() => {
+                    const randomMsg = encouragements[Math.floor(Math.random() * encouragements.length)];
+                    showMessage(status, randomMsg, "pending");
+                }, 1500);
+            }
+
+            gameState[memoryId].guessed = true;
+        }
+
+        function showMessage(statusElement, message, type) {
+            statusElement.textContent = message;
+            statusElement.className = `status ${type}`;
+        }
+
+        function showCelebration(card) {
+            const celebration = document.createElement('div');
+            celebration.className = 'celebration';
+            celebration.textContent = '🎉';
+            card.style.position = 'relative';
+            card.appendChild(celebration);
+            
+            setTimeout(() => {
+                if (celebration.parentNode) {
+                    celebration.parentNode.removeChild(celebration);
+                }
+            }, 1000);
+        }
+
+        function updateProgress() {
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const percentage = (correctGuesses / memories.length) * 100;
+            
+            progressBar.style.width = percentage + '%';
+            progressText.textContent = `${correctGuesses} of ${memories.length} memories guessed correctly`;
+        }
+
+        function unlockSurprise() {
+            const surpriseBox = document.getElementById('surpriseBox');
+            const surpriseContent = document.getElementById('surpriseContent');
+            
+            surpriseBox.classList.remove('locked');
+            surpriseBox.classList.add('unlocked');
+            
+            setTimeout(() => {
+                surpriseBox.innerHTML = '';
+                surpriseContent.classList.add('revealed');
+                surpriseBox.appendChild(surpriseContent);
+                createConfetti();
+            }, 500);
+        }
+
+        function createConfetti() {
+            const confettiContainer = document.createElement('div');
+            confettiContainer.className = 'confetti';
+            document.body.appendChild(confettiContainer);
+
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.style.position = 'absolute';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+                    confetti.style.animationDelay = Math.random() * 2 + 's';
+                    confetti.innerHTML = ['🎉', '🎊', '✨', '🌟', '💫'][Math.floor(Math.random() * 5)];
+                    confetti.style.fontSize = Math.random() * 20 + 20 + 'px';
+                    confetti.style.animation = `
+                        confettiFall ${Math.random() * 3 + 2}s linear infinite
+                    `;
+                    
+                    confettiContainer.appendChild(confetti);
+                }, i * 50);
+            }
+
+            // Add confetti animation
+            if (!document.querySelector('#confetti-style')) {
+                const style = document.createElement('style');
+                style.id = 'confetti-style';
+                style.textContent = `
+                    @keyframes confettiFall {
+                        0% { 
+                            transform: translateY(-100vh) rotate(0deg); 
+                            opacity: 1; 
+                        }
+                        100% { 
+                            transform: translateY(100vh) rotate(720deg); 
+                            opacity: 0; 
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+
+            setTimeout(() => {
+                if (confettiContainer.parentNode) {
+                    confettiContainer.parentNode.removeChild(confettiContainer);
+                }
+            }, 10000);
+        }
+
+        function playVideo(videoElement) {
+            const overlay = videoElement.nextElementSibling;
+            if (videoElement.paused) {
+                videoElement.play();
+                if (overlay) overlay.style.display = 'none';
+            } else {
+                videoElement.pause();
+                if (overlay) overlay.style.display = 'flex';
+            }
+        }
+
+        function showFinalSurprise() {
+            alert('🎂 Happy Birthday! 🎂\n\nThank you for being such an amazing friend! This quiz was made with lots of love to celebrate YOU! 💕✨\n\nHere\'s to many more wonderful memories together! 🥳\n\n Take this surprize gift in clg...');
+        }
+
+        // Initialize the game when page loads
+        window.addEventListener('load', initGame);
+    </script>
+</body>
+</html>
